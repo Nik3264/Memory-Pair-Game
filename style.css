@@ -1,0 +1,29 @@
+* {
+    padding:0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    background-color:var(--color-00);
+    overflow: hidden;
+    font-family: 'Oswald', sans-serif;
+    font-family: 'Permanent Marker', cursive;
+}
+
+:root {
+    --color-00:#032a18;
+    --color-01:#669374;
+    --color-02:#cab7b3;
+    --color-03:#deb69d;
+    --color-04:#8f6b5f;
+}
+
+.header__main {
+    height: 80px;
+    text-align: center;
+    padding-top:20px ;
+    color: var(--color-01);
+    border-bottom: var(--color-01) 2px solid;
+}
