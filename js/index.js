@@ -19,20 +19,28 @@ class Card {
   }
 }
 
-
-
-let game = document.querySelector(".game__wrap");
-let numberOfCard = [];
-
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
+
+let game = document.querySelector(".game__wrap");
+let numberOfCard = [];
 
 for (let i = 2; i < 18; i++) {
   numberOfCard.push(Math.floor(i / 2));
 }
 
-while (numberOfCard.length > 0) {
+/*
+numberOfCard.sort(function() { return 0.5 - Math.random(17); });
+console.log(numberOfCard);
+
+numberOfCard.forEach((i)=>{
+    let card = new Card(`0${i}`, i);
+    game.innerHTML += card.render();
+});
+*/
+
+while (numberOfCard.length>0) {
   let i = getRandomInt(numberOfCard.length);
   let random = numberOfCard[i];
   console.log("i: ", i, "random: ", random);
