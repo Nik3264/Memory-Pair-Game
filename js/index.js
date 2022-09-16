@@ -46,28 +46,29 @@ while (numbersOfCard.length > 0) {
   game.innerHTML += card.render();
   numbersOfCard.splice(i, 1);
 }
-
+/*
 function isSameCardPressed(id1, id2, number1, number2) {
   if (number1 === number2 && id1 != id2) {
     return true;
   } else {
     return false;
   }
-}
+}*/
 
-//let cardsPressed=[];
+let cardsPressed = [];
+/*
 let state = {
   cardNumberPressedPreviouse: 0,
   cardidPressedPreviouse: "",
   cardNumberPressed: 0,
   cardidPressed: "",
-};
+};*/
 
 let removeId1 = "",
   removeId2 = "",
   rotateId1 = "",
   rotateId2 = "";
-
+/*
 function removeSame(id1, id2) {
   if (id1 != "" && id2 != "") {
     document.getElementById(id1).classList.add("hidden");
@@ -81,8 +82,9 @@ function rotateBack(id1, id2) {
     document.getElementById(id1).classList.remove("round");
     document.getElementById(id2).classList.remove("round");
   }
-}
+}*/
 
+/*
 function markRemove({
   cardNumberPressedPreviouse,
   cardidPressedPreviouse,
@@ -118,58 +120,80 @@ function markRotate({
     rotateId2 = cardidPressed;
   }
 }
+*/
+function markRemove(cardsPressed) {
+  if (cardsPressed.length > 1) {
+    if (
+      cardsPressed[0].number === cardsPressed[1].number &&
+      cardsPressed[0].id !== cardsPressed[1].id
+    ) {
+      removeId1 = cardsPressed.shift().id;
+      removeId2 = cardsPressed.shift().id;
+      document.getElementById(removeId1).classList.add("hidden");
+      document.getElementById(removeId2).classList.add("hidden");
+    }
+  }
+}
+
+function markRotate(cardsPressed) {
+  if (cardsPressed.length > 1) {
+    /*
+    if (
+      cardsPressed[0].number !== cardsPressed[1].number &&
+      cardsPressed[0].id !== cardsPressed[1].id &&
+      cardsPressed[0].id !== "" &&
+      cardsPressed[1].id !== "" 
+
+      
+      &&
+      document
+      .getElementById(cardsPressed[0].id)
+      .classList.contains("round") &&
+      document
+      .getElementById(cardsPressed[1].id)
+      .classList.contains("round")
+      
+    ) {
+      rotateId1 = cardsPressed.shift().id;
+      rotateId2 = cardsPressed.shift().id;
+      document.getElementById(rotateId1).classList.remove("round");
+      document.getElementById(rotateId2).classList.remove("round");
+    }*/
+    rotateId1 = cardsPressed.shift().id;
+    rotateId2 = cardsPressed.shift().id;
+    document.getElementById(rotateId1).classList.remove("round");
+    document.getElementById(rotateId2).classList.remove("round");
+  }
+}
 
 function clearId(id1, id2) {
   id1 = "";
   id2 = "";
 }
-function shiftCurrentCardToPrev() {
-  state.cardNumberPressedPreviouse = state.cardNumberPressed;
-  state.cardidPressedPreviouse = state.cardidPressed;
-}
+
 let isRound = true;
-//console.log("до евента ", cardNumberPressedPreviouse);
 
 game.addEventListener("click", (event) => {
-  //console.log("внутри ивента ", cardNumberPressedPreviouse);
   let target = event.target;
   while (target != this) {
     if (target.getAttribute("number") != null) {
-      state.cardNumberPressed = target.getAttribute("number");
-      state.cardidPressed = target.getAttribute("id");
-
-      console.log("после присваивания нового знач ", state);
+      let number = target.getAttribute("number");
+      let id = target.getAttribute("id");
+      cardsPressed.push({number,id});
+      console.log("после присваивания нового знач ", cardsPressed);
 
       if (isRound) {
         target.classList.toggle("round");
       }
-      //cardsPressed.push({id:cardidPressed, number:cardNumberPressed, isActive:false});
-      /*
-      removeSame(removeId1, removeId2);
-      clearId(removeId1, removeId2);
 
-      rotateBack(rotateId1, rotateId2);
-      clearId(rotateId1, rotateId2);
-*/
-      setTimeout(()=>{
-        markRemove(state);
-        markRotate(state);
-        shiftCurrentCardToPrev(state);
-      });
-
-      setTimeout(()=>{
-        
-        removeSame(removeId1, removeId2);
+      setTimeout(() => {
+        markRemove(cardsPressed);
         clearId(removeId1, removeId2);
-        rotateBack(rotateId1, rotateId2);
+        markRotate(cardsPressed);
         clearId(rotateId1, rotateId2);
-        
-      },1500);
-
-      console.log(state);
+      }, 1500);
       break;
     }
-
     target = target.parentNode;
   }
 });
