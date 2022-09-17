@@ -1,96 +1,112 @@
 * {
-    padding:0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0 auto;
-    background-color:var(--color-00);
-    overflow: hidden;
-    font-family: 'Oswald', sans-serif;
-    font-family: 'Permanent Marker', cursive;
+  margin: 0 auto;
+  background-color: var(--color-00);
+  overflow: hidden;
+  font-family: "Oswald", sans-serif;
+  font-family: "Permanent Marker", cursive;
+  background: url("./img/background.jpg") no-repeat center top fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 :root {
-    --color-00:#032a18;
-    --color-01:#669374;
-    --color-02:#cab7b3;
-    --color-03:#deb69d;
-    --color-04:#8f6b5f;
+  --dark-green: #032a18;
+  --light-green: #669374;
+  --light-sand: #cab7b3;
+  --sand: #deb69d;
+  --light-brown: #8f6b5f;
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .header__main {
-    height: 80px;
-    text-align: center;
-    padding-top:20px ;
-    color: var(--color-01);
-    border-bottom: var(--color-01) 2px solid;
+  height: 80px;
+  text-align: center;
+  font-size: 1.2em;
+  padding-top: 20px;
+  color: var(--light-sand);
+  text-shadow: 5px 5px 15px var(--dark-green);
+  border-bottom: var(--light-green) 2px solid;
 }
 
 .game__wrap {
-    margin: 20px auto;
-    max-width: 500px;
-    display: grid;
-    
-    grid-template-columns:repeat(4, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 10px;
-    justify-content:center;
+  margin: 20px auto;
+  max-width: 500px;
+  display: grid;
+
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+  justify-content: center;
 }
 
-
-/* entire container, keeps perspective */
-
-.flip-container {
-	perspective: 2000px;
-}
-
-
-/* flip the pane when hovered */
-/*.flip-container:hover .flipper, .flip-container.hover .flipper*/
 .round {
-    transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 
 .hidden {
-    visibility: hidden;
+  animation: hide 0.8s;
+  /*transition: all 0.6s cubic-bezier(0, 0, 1, 1) 0ms;*/
+  animation-fill-mode: forwards;
+  visibility: hidden;
 }
 
-.flip-container, .front, .back {
-	width: 100px;
-	height: 140px;
+.flip-container,
+.front,
+.back {
+  width: 100px;
+  height: 140px;
 }
 
 /* flip speed goes here */
 .flipper {
-	transition: 0.6s;
-	transform-style: preserve-3d;
-	position: relative;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
 }
 
 /* hide back of pane during swap */
-.front, .back {
-	backface-visibility: hidden;
-	position: absolute;
-	top: 0;
-	left: 0;
+.front,
+.back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 3px solid var(--light-green);
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px var(--dark-green);
 }
 
 /* front pane, placed above back */
 .front {
-    background-color: var(--color-03);
-	z-index: 2;
-	/* for firefox 31 */
-	transform: rotateY(0deg);
+  background-color: var(--sand);
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateY(0deg);
 }
-.img__back{
-    display: block;
-    height: 100%;
-    width: 100%;
-    margin: 0 auto;
+.img__back {
+  display: block;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 15px;
 }
 /* back, initially hidden pane */
 .back {
-	transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
