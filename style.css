@@ -81,6 +81,7 @@ body {
 }
 
 .level {
+  padding-top: 5px;
   font-family:"Oswald", sans-serif;
   text-align: center;
 }
@@ -92,7 +93,7 @@ body {
   border-radius:15px;
   background-color: var(--light-green);
   color:var(--light-sand);
-  font-size: 1.5em;
+  font-size: 1.2em;
   box-shadow:3px 3px 1px 1px rgba(var(--dark-green),0.5);
 }
 
@@ -153,7 +154,7 @@ body {
 }
 
 .front {
-  background-color: var(--sand);
+  background-color: var(--light-sand);
   z-index: 2;
   transform: rotateY(0deg);
 }
