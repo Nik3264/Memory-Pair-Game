@@ -24,9 +24,7 @@ class Game {
     this.maxNumberOfCards = Math.floor(maxNumberOfCards / 2) * 2;
     this.numbersOfCard = [];
     this.game = document.querySelector(classParent);
-    //this.level = document.querySelector(".level");
     this.cardsPressed = [];
-    //this.clicks = 0;
   }
 
   getRandomInt(max) {
@@ -149,9 +147,7 @@ window.addEventListener("DOMContentLoaded", () => {
         let number = target.getAttribute("number");
         let id = target.getAttribute("id");
         this.cardsPressed.push({ number, id });
-        console.log("target ", target);
         target.classList.toggle("round");
-        console.log("target.classList ", target.classList);
         setTimeout(() => {
           this.markRemove();
           this.markRotate();
