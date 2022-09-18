@@ -7,7 +7,7 @@
 body {
   margin: 0 auto;
   background-color: var(--color-00);
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: "Oswald", sans-serif;
   font-family: "Permanent Marker", cursive;
   background: url("./img/background.jpg") no-repeat center top fixed;
@@ -81,14 +81,12 @@ body {
 }
 
 .level {
-
   font-family:"Oswald", sans-serif;
   text-align: center;
-
 }
 
 .game__info button, .level {
-  width: 100px;
+  width: 20%;
   height: 50px;
   border:2px solid var(--light-sand);
   border-radius:15px;
