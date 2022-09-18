@@ -18,69 +18,149 @@ class Card {
   }
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
-let game = document.querySelector(".game__wrap");
-let maxNumberOfCards = 6;
-const numbersOfCard = [];
-
-function initNumbersOfCard(numbersOfCard, maxNumberOfCards) {
-  for (let i = 2; i < maxNumberOfCards + 2; i++) {
-    numbersOfCard.push(Math.floor(i / 2));
+class Game {
+  constructor(maxNumberOfCards, classParent) {
+    this.maxNumberOfCards = Math.floor(maxNumberOfCards / 2) * 2;
+    this.numbersOfCard = [];
+    this.game = document.querySelector(classParent);
+    //this.level = document.querySelector(".level");
+    this.cardsPressed = [];
+    //this.clicks = 0;
   }
-}
 
-function createGamesField(){
-  while (numbersOfCard.length > 0) {
-    let i = getRandomInt(numbersOfCard.length);
-    let random = numbersOfCard[i];
-    let card = new Card(`0${random}`, random, `id${numbersOfCard.length}`);
-    game.innerHTML += card.render();
-    numbersOfCard.splice(i, 1);
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
   }
-}
 
-initNumbersOfCard(numbersOfCard, maxNumberOfCards);
-createGamesField();
-
-let cardsPressed = [];
-
-function markRemove(cardsPressed) {
-  if (cardsPressed.length > 1) {
-    if (
-      cardsPressed[0].number === cardsPressed[1].number &&
-      cardsPressed[0].id !== cardsPressed[1].id
-    ) {
-      document.getElementById(cardsPressed.shift().id).classList.add("hidden");
-      document.getElementById(cardsPressed.shift().id).classList.add("hidden");
+  initNumbersOfCard() {
+    for (let i = 2; i < this.maxNumberOfCards + 2; i++) {
+      this.numbersOfCard.push(Math.floor(i / 2));
     }
   }
-}
 
-function markRotate(cardsPressed) {
-  if (cardsPressed.length > 1) {
-    document.getElementById(cardsPressed.shift().id).classList.remove("round");
-    document.getElementById(cardsPressed.shift().id).classList.remove("round");
-  }
-}
-
-game.addEventListener("click", (event) => {
-  let target = event.target;
-  while (target != this) {
-    if (target.getAttribute("number") != null) {
-      let number = target.getAttribute("number");
-      let id = target.getAttribute("id");
-      cardsPressed.push({ number, id });
-      
-      target.classList.toggle("round");
-
-      setTimeout(() => {
-        markRemove(cardsPressed);
-        markRotate(cardsPressed);
-      }, 1500);
+  createGamesField() {
+    this.clicks = 0;
+    this.game.innerHTML = "";
+    while (this.numbersOfCard.length > 0) {
+      let i = this.getRandomInt(this.numbersOfCard.length);
+      let random = this.numbersOfCard[i];
+      let card = new Card(
+        `0${random}`,
+        random,
+        `id${this.numbersOfCard.length}`
+      );
+      this.game.insertAdjacentHTML("beforeend", card.render());
+      this.numbersOfCard.splice(i, 1);
     }
-    target = target.parentNode;
   }
+
+  markRemove() {
+    if (this.cardsPressed.length > 1) {
+      if (
+        this.cardsPressed[0].number === this.cardsPressed[1].number &&
+        this.cardsPressed[0].id !== this.cardsPressed[1].id
+      ) {
+        document
+          .getElementById(this.cardsPressed.shift().id)
+          .classList.add("hidden");
+        document
+          .getElementById(this.cardsPressed.shift().id)
+          .classList.add("hidden");
+      }
+    }
+  }
+
+  markRotate() {
+    if (this.cardsPressed.length > 1) {
+      document
+        .getElementById(this.cardsPressed.shift().id)
+        .classList.remove("round");
+      document
+        .getElementById(this.cardsPressed.shift().id)
+        .classList.remove("round");
+    }
+  }
+
+  greetings() {
+    this.game.innerHTML = '<div class="modal">you win!</div>';
+  }
+
+  isWin() {
+    let win = true;
+    if (this.game.hasChildNodes) {
+      this.game.childNodes.forEach((element) => {
+        win = win && element.childNodes[1].classList.contains("hidden");
+      });
+    }
+    return win;
+  }
+
+  start() {
+    this.initNumbersOfCard();
+    this.createGamesField();
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  let level = document.querySelector(".level"),
+    button3 = document.querySelector(".three"),
+    button4 = document.querySelector(".four"),
+    buttonNumber = document.querySelector(".number");
+
+  let myGame = new Game(0, ".game__wrap");
+
+  let number = 0,
+    clicks = 0;
+
+  function initGame(number) {
+    clicks = 0;
+    level.innerText = clicks;
+    myGame.maxNumberOfCards = number;
+    myGame.start();
+  }
+
+  button3.addEventListener("click", () => {
+    initGame(12);
+  });
+
+  button4.addEventListener("click", () => {
+    initGame(16);
+  });
+
+  buttonNumber.addEventListener("click", (event) => {
+    let game = document.querySelector(".game__wrap");
+    game.innerHTML =
+      '<div class="game__number"><input class="game__number__input"></div>';
+    let newGameInput = document.querySelector(".game__number__input");
+
+    newGameInput.addEventListener("change", () => {
+      number = Math.floor(Number(newGameInput.value) / 2) * 2;
+      initGame(number);
+    });
+  });
+
+  function myListener(event) {
+    let target = event.target;
+    while (target != this.game) {
+      if (target.getAttribute("number") != null) {
+        clicks++;
+        level.innerText = clicks;
+        let number = target.getAttribute("number");
+        let id = target.getAttribute("id");
+        this.cardsPressed.push({ number, id });
+        console.log("target ", target);
+        target.classList.toggle("round");
+        console.log("target.classList ", target.classList);
+        setTimeout(() => {
+          this.markRemove();
+          this.markRotate();
+          if (this.isWin()) {
+            this.greetings();
+          }
+        }, 1500);
+      }
+      target = target.parentNode;
+    }
+  }
+  myGame.game.addEventListener("click", myListener.bind(myGame));
 });
