@@ -114,7 +114,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function initGame(number) {
     clicks = 0;
-    level.innerText = clicks;
+    level.innerText = `click:${clicks}`;
     myGame.maxNumberOfCards = number;
     myGame.start();
   }
@@ -130,9 +130,9 @@ window.addEventListener("DOMContentLoaded", () => {
   buttonNumber.addEventListener("click", (event) => {
     let game = document.querySelector(".game__wrap");
     game.innerHTML =
-      '<div class="game__number"><input class="game__number__input"></div>';
+      '<div class="game__number">Input number, please (<16)<input class="game__number__input"></div>';
     let newGameInput = document.querySelector(".game__number__input");
-
+    newGameInput.focus();
     newGameInput.addEventListener("change", () => {
       number = Math.floor(Number(newGameInput.value) / 2) * 2;
       initGame(number);
@@ -144,7 +144,7 @@ window.addEventListener("DOMContentLoaded", () => {
     while (target != this.game) {
       if (target.getAttribute("number") != null) {
         clicks++;
-        level.innerText = clicks;
+        level.innerText = `click:${clicks}`;
         let number = target.getAttribute("number");
         let id = target.getAttribute("id");
         this.cardsPressed.push({ number, id });
