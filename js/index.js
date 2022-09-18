@@ -9,7 +9,7 @@ class Card {
     return `<div class="flip-container" >
         <div id="${this.id}" class="flipper" number="${this.number}">
             <div class="front">
-                <img src="../img/sky10.jpg" alt="" class="img__back">
+                <img src="./img/sky10.jpg" alt="" class="img__back">
             </div>
             <div class="back">
                 <img src="./img/${this.img}.jpg" alt="" class="img__back">
