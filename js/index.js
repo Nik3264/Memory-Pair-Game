@@ -149,15 +149,14 @@ window.addEventListener("DOMContentLoaded", () => {
         let id = target.getAttribute("id");
         this.cardsPressed.push({ number, id });
         target.classList.toggle("round");
-        setTimeout(() => {
-          setTimeout(()=>{
-            if (this.isWin()) {
-            this.greetings();
-          }
-          },500);
+        let timer = setTimeout(() => {
           this.markRemove();
           this.markRotate();
-        }, 1500);
+          if (this.isWin()) {
+            this.greetings();
+          }
+          setTimeout(timer,1000);
+        }, 1000);
       }
       target = target.parentNode;
     }
