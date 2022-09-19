@@ -1,4 +1,3 @@
-
 class Card {
   constructor(img, number, id) {
     this.img = img;
@@ -71,6 +70,7 @@ class Game {
   }
 
   markRotate() {
+    console.log("this.cardsPressed ", this.cardsPressed);
     if (this.cardsPressed.length > 1) {
       document
         .getElementById(this.cardsPressed.shift().id)
@@ -89,7 +89,9 @@ class Game {
     let win = true;
     if (this.game.hasChildNodes) {
       this.game.childNodes.forEach((element) => {
-        win = win && element.childNodes[1].classList.contains("hidden");
+        if (element.childNodes[1] != undefined) {
+          win = win && element.childNodes[1].classList.contains("hidden");
+        }
       });
     }
     return win;
@@ -149,14 +151,18 @@ window.addEventListener("DOMContentLoaded", () => {
         let id = target.getAttribute("id");
         this.cardsPressed.push({ number, id });
         target.classList.toggle("round");
-        let timer = setTimeout(() => {
+        setTimeout(() => {
           this.markRemove();
           this.markRotate();
-          if (this.isWin()) {
-            this.greetings();
-          }
-          //setTimeout(timer,1000);
-        }, 1000);
+
+          setTimeout(() => {
+            setTimeout(() => {
+              if (this.isWin()) {
+                this.greetings();
+              }
+            }, 2000);
+          });
+        }, 2000);
       }
       target = target.parentNode;
     }
