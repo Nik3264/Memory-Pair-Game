@@ -9,7 +9,7 @@ class Card {
     return `<div class="flip-container" >
         <div id="${this.id}" class="flipper" number="${this.number}">
             <div class="front">
-                <img src="./img/sky10.jpg" alt="" class="img__back">
+                <img src="./img/Sky10.jpg" alt="" class="img__back">
             </div>
             <div class="back">
                 <img src="./img/${this.img}.jpg" alt="" class="img__back">
@@ -149,11 +149,13 @@ window.addEventListener("DOMContentLoaded", () => {
         this.cardsPressed.push({ number, id });
         target.classList.toggle("round");
         setTimeout(() => {
-          this.markRemove();
-          this.markRotate();
-          if (this.isWin()) {
+          setTimeout(()=>{
+            if (this.isWin()) {
             this.greetings();
           }
+          },500);
+          this.markRemove();
+          this.markRotate();
         }, 1500);
       }
       target = target.parentNode;
