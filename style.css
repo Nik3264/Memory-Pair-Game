@@ -126,8 +126,12 @@ body {
 }
 
 .hidden {
+  -webkit-animation: hide 0.6s;
+  -moz-animation: hide 0.6s;
+  -o-animation: hide 0.6s;
   animation: hide 0.6s;
   animation-fill-mode: forwards;
+  -moz-animation-fill-mode: forwards;
   visibility: hidden;
 }
 

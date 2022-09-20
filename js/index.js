@@ -54,7 +54,8 @@ class Game {
   }
 
   markRemove() {
-    if (this.cardsPressed.length > 1) {
+    let isPossible = true;
+    while (isPossible && this.cardsPressed.length > 1) {
       if (
         this.cardsPressed[0].number === this.cardsPressed[1].number &&
         this.cardsPressed[0].id !== this.cardsPressed[1].id
@@ -65,12 +66,14 @@ class Game {
         document
           .getElementById(this.cardsPressed.shift().id)
           .classList.add("hidden");
+      } else {
+        isPossible = false;
       }
     }
   }
 
   markRotate() {
-    console.log("this.cardsPressed ", this.cardsPressed);
+    //console.log("this.cardsPressed ", this.cardsPressed);
     if (this.cardsPressed.length > 1) {
       document
         .getElementById(this.cardsPressed.shift().id)
@@ -143,29 +146,77 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function myListener(event) {
     let target = event.target;
-    while (target != this.game) {
-      if (target.getAttribute("number") != null) {
+    //console.log("target.getAttribute number ДО цикла",target.getAttribute("number"));
+    
+    const req = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log("target внутри промиса ",target," ",target.getAttribute("number"));
+        target.classList.toggle("round");
+        resolve();
+      },100);
+    });
+    
+    while (target != this.game && target.getAttribute("number") === null) {
+      console.log("target.getAttribute number ВНУТРИ ЦИКЛА до if",target," ",target.getAttribute("number"));
+      target = target.parentNode;
+      /*if (target.getAttribute("number") === null) {
+        console.log("target.getAttribute number после if",target.getAttribute("number"));
+        target = target.parentNode;
+        console.log("target.getAttribute number после if",target.getAttribute("number"));
+      } */
+      //if (target.getAttribute("number") != null)
+    }//while
+        //console.log("target.getAttribute number внутри if, до промиса ",target," ",target.getAttribute("number"));
         clicks++;
         level.innerText = `click:${clicks}`;
         let number = target.getAttribute("number");
         let id = target.getAttribute("id");
         this.cardsPressed.push({ number, id });
-        target.classList.toggle("round");
-        setTimeout(() => {
-          this.markRemove();
-          this.markRotate();
 
-          setTimeout(() => {
-            setTimeout(() => {
+        //console.log("target.getAttribute number внутри if, до промиса ",target," ",target.getAttribute("number"));
+//вырезали промис и переместили вне цикла while
+
+        req
+          .then(() => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                this.markRemove(); //
+                resolve();
+              }, 600);
+            });
+          })
+          .then(() => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                this.markRotate();
+                resolve();
+              });
+            });
+          })
+          .then(() => {
+            return setTimeout(() => {
               if (this.isWin()) {
                 this.greetings();
               }
-            }, 2000);
-          });
-        }, 2000);
-      }
-      target = target.parentNode;
-    }
+            }, 1000);
+          }); //конец обработки
+          console.log("target.getAttribute number внутри if после промиса",target," ",target.getAttribute("number"));
+      
+      console.log("target.getAttribute number после if",target," ",target.getAttribute("number"));
+      /*
+                    setTimeout(() => {
+                setTimeout(() => {
+                  if (this.isWin()) {
+                    this.greetings();
+                  }
+                }, 1500);
+              });
+              */
+
+//      target = target.parentNode;
+      console.log("target.getAttribute number после if после присвоения родителя ",target," ",target.getAttribute("number"));
+
+
   }
   myGame.game.addEventListener("click", myListener.bind(myGame));
 });
