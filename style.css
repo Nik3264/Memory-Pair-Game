@@ -34,6 +34,20 @@ body {
   }
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.modal {
+  animation: fade 0.6s linear;
+  animation-fill-mode: forwards;
+}
+
 .modal,
 .game__number {
   position: absolute;
@@ -126,13 +140,14 @@ body {
 }
 
 .hidden {
-  -webkit-animation: hide 0.6s;
-  -moz-animation: hide 0.6s;
-  -o-animation: hide 0.6s;
-  animation: hide 0.6s;
+  -webkit-animation: hide 0.6s ease-out;
+  -moz-animation: hide 0.6s ease-out;
+  -o-animation: hide 0.6s ease-out;
+  animation: hide 0.6s ease-out;
   animation-fill-mode: forwards;
   -moz-animation-fill-mode: forwards;
-  visibility: hidden;
+  transition: all 0.6s linear;
+  --webkit-transition:all 0.6s linear;
 }
 
 .flip-container,
@@ -144,6 +159,9 @@ body {
 
 .flipper {
   transition: 0.6s;
+  --webkit-transition:0.6s;
+  -webkit-transition: 0.6s;
+  --moz-transition:0.6s;
   transform-style: preserve-3d;
   position: relative;
 }
@@ -181,5 +199,16 @@ body {
   .game__wrap {
     grid-template-columns: repeat(3, 1fr);
     max-width: 400px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .game__wrap {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 250px;
+  }
+
+  .header__main, .game__info {
+    font-size: 0.8em;
   }
 }

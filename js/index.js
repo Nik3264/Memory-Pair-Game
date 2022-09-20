@@ -69,18 +69,21 @@ class Game {
       } else {
         isPossible = false;
       }
-    }
+    } //while
   }
 
   markRotate() {
-    //console.log("this.cardsPressed ", this.cardsPressed);
     if (this.cardsPressed.length > 1) {
-      document
-        .getElementById(this.cardsPressed.shift().id)
-        .classList.remove("round");
-      document
-        .getElementById(this.cardsPressed.shift().id)
-        .classList.remove("round");
+      setTimeout(() => {
+        if (this.cardsPressed.length > 1) {
+          document
+            .getElementById(this.cardsPressed.shift().id)
+            .classList.remove("round");
+          document
+            .getElementById(this.cardsPressed.shift().id)
+            .classList.remove("round");
+        }
+      }, 1000);
     }
   }
 
@@ -110,12 +113,10 @@ window.addEventListener("DOMContentLoaded", () => {
   let level = document.querySelector(".level"),
     button3 = document.querySelector(".three"),
     button4 = document.querySelector(".four"),
-    buttonNumber = document.querySelector(".number");
-
-  let myGame = new Game(0, ".game__wrap");
-
-  let number = 0,
-    clicks = 0;
+    buttonNumber = document.querySelector(".number"),
+    number = 0,
+    clicks = 0,
+    myGame = new Game(0, ".game__wrap");
 
   function initGame(number) {
     clicks = 0;
@@ -132,7 +133,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initGame(16);
   });
 
-  buttonNumber.addEventListener("click", (event) => {
+  buttonNumber.addEventListener("click", () => {
     let game = document.querySelector(".game__wrap");
     game.innerHTML =
       '<div class="game__number">Input number, please (<16)<input class="game__number__input"></div>';
@@ -146,77 +147,50 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function myListener(event) {
     let target = event.target;
-    //console.log("target.getAttribute number ДО цикла",target.getAttribute("number"));
-    
-    const req = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log("target внутри промиса ",target," ",target.getAttribute("number"));
-        target.classList.toggle("round");
-        resolve();
-      },100);
-    });
-    
     while (target != this.game && target.getAttribute("number") === null) {
-      console.log("target.getAttribute number ВНУТРИ ЦИКЛА до if",target," ",target.getAttribute("number"));
       target = target.parentNode;
-      /*if (target.getAttribute("number") === null) {
-        console.log("target.getAttribute number после if",target.getAttribute("number"));
-        target = target.parentNode;
-        console.log("target.getAttribute number после if",target.getAttribute("number"));
-      } */
-      //if (target.getAttribute("number") != null)
-    }//while
-        //console.log("target.getAttribute number внутри if, до промиса ",target," ",target.getAttribute("number"));
-        clicks++;
-        level.innerText = `click:${clicks}`;
-        let number = target.getAttribute("number");
-        let id = target.getAttribute("id");
-        this.cardsPressed.push({ number, id });
+    } //while
+    clicks++;
+    level.innerText = `click:${clicks}`;
+    let number = target.getAttribute("number");
+    let id = target.getAttribute("id");
+    this.cardsPressed.push({ number, id });
 
-        //console.log("target.getAttribute number внутри if, до промиса ",target," ",target.getAttribute("number"));
-//вырезали промис и переместили вне цикла while
+    const cardChangeRequest = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log("target внутри промиса до переворота", target);
+        if (target.getAttribute("number") != null) {
+          target.classList.toggle("round");
+        }
+        console.log("target внутри промиса после переворота", target);
+        resolve();
+      });
+    });
 
-        req
-          .then(() => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                this.markRemove(); //
-                resolve();
-              }, 600);
-            });
-          })
-          .then(() => {
-            return new Promise((resolve, reject) => {
-              setTimeout(() => {
-                this.markRotate();
-                resolve();
-              });
-            });
-          })
-          .then(() => {
-            return setTimeout(() => {
-              if (this.isWin()) {
-                this.greetings();
-              }
-            }, 1000);
-          }); //конец обработки
-          console.log("target.getAttribute number внутри if после промиса",target," ",target.getAttribute("number"));
-      
-      console.log("target.getAttribute number после if",target," ",target.getAttribute("number"));
-      /*
-                    setTimeout(() => {
-                setTimeout(() => {
-                  if (this.isWin()) {
-                    this.greetings();
-                  }
-                }, 1500);
-              });
-              */
-
-//      target = target.parentNode;
-      console.log("target.getAttribute number после if после присвоения родителя ",target," ",target.getAttribute("number"));
-
-
+    cardChangeRequest
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            this.markRemove(); //
+            resolve();
+          }, 1500);
+        });
+      })
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            this.markRotate();
+            resolve();
+          });
+        });
+      })
+      .then(() => {
+        setTimeout(() => {
+          if (this.isWin()) {
+            this.greetings();
+          }
+        }, 1500);
+      }); //promise
   }
   myGame.game.addEventListener("click", myListener.bind(myGame));
 });
