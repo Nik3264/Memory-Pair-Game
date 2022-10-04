@@ -130,3 +130,61 @@ n.addEventListener("click", (event) => {
     target = target.parentNode;
   }
 });
+
+
+
+
+
+cardChangeRequest(target)
+.then(() => {
+  return new Promise((resolve) => {
+    console.log("173: 1- .then", target);
+    setTimeout(() => {
+      console.log("175: 1- .then before markRemove");
+      this.markRemove(); //
+      console.log("177: 1- .then after markRemove");
+      resolve();
+    }, 1000);
+  });
+})
+.then(() => {
+  //console.log("183: 2- .then before new Promise");
+  //return new Promise((resolve) => {
+  console.log("185: 2- .then");
+  setTimeout(() => {
+    console.log("187: 2- .then setTimeout before markRotate");
+    this.markRotate();
+    console.log("189: 2- .then setTimeout after markRotate");
+    //resolve();
+  }, 500);
+  //});
+}); /*
+.then(() => {
+  console.log("195: 3- .then before setTimeout");
+  setTimeout(() => {
+    console.log("197: 3- .then in setTimeout before isWin");
+    if (this.isWin()) {
+      this.greetings();
+    }
+    console.log("201: 3- .then in setTimeout after isWin");
+  }, 1000);
+}); */ //promise
+
+markRemove(id1, id2) {
+  /* let isPossible = true;
+  while (isPossible && this.cardsPressed.length > 1) {
+    if (
+      this.cardsPressed[0].number === this.cardsPressed[1].number &&
+      this.cardsPressed[0].id !== this.cardsPressed[1].id
+    ) {*/
+  document
+    .getElementById(this.cardsPressed.shift().id)
+    .classList.add("hidden");
+  document
+    .getElementById(this.cardsPressed.shift().id)
+    .classList.add("hidden");
+  /*} else {
+      isPossible = false;
+    }
+  }*/ //while
+}
