@@ -139,7 +139,7 @@ window.addEventListener("DOMContentLoaded", () => {
   buttonNumber.addEventListener("click", () => {
     let game = document.querySelector(".game__wrap");
     game.innerHTML =
-      '<div class="game__number">Input number, please (<16)<input class="game__number__input"></div>';
+      '<div class="game__number">Enter an even number < 16 (odd will be rounded down)<input class="game__number__input"></div>';
     let newGameInput = document.querySelector(".game__number__input");
     newGameInput.focus();
     newGameInput.addEventListener("change", () => {
