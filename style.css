@@ -18,7 +18,7 @@ body {
 }
 
 :root {
-  --dark-green: rgba(3, 42, 24, 0);
+  --dark-green: rgba(3, 42, 24, 0.7);
   --light-green: #669374;
   --light-sand: #cab7b3;
   --sand: #deb69d;
